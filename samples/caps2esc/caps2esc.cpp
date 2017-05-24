@@ -49,6 +49,7 @@ vector<InterceptionKeyStroke> caps2esc(const InterceptionKeyStroke &kstroke) {
             return kstrokes;
         }
         if (kstroke == capslock_up) {
+            capslock_is_down = false;
             if (esc_give_up) {
                 esc_give_up = false;
                 kstrokes.push_back(ctrl_up);
@@ -56,7 +57,6 @@ vector<InterceptionKeyStroke> caps2esc(const InterceptionKeyStroke &kstroke) {
                 kstrokes.push_back(esc_down);
                 kstrokes.push_back(esc_up);
             }
-            capslock_is_down = false;
             return kstrokes;
         }
         if (!esc_give_up && !(kstroke.state & INTERCEPTION_KEY_UP)) {
@@ -64,13 +64,8 @@ vector<InterceptionKeyStroke> caps2esc(const InterceptionKeyStroke &kstroke) {
             kstrokes.push_back(ctrl_down);
         }
 
-        if (kstroke == esc_down)
-            kstrokes.push_back(capslock_down);
-        else if (kstroke == esc_up)
-            kstrokes.push_back(capslock_up);
-        else
-            kstrokes.push_back(kstroke);
-
+        kstrokes.push_back(kstroke);
+    
         return kstrokes;
     }
 
